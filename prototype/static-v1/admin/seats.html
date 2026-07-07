@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>座位管理 — 图书馆座位预约</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .modal-overlay { display: none; }
+    .modal-overlay.show { display: flex; }
+  </style>
+</head>
+<body>
+  <!-- 侧边栏 -->
+  <div class="admin-sidebar">
+    <div class="sidebar-logo">📚 座位预约后台</div>
+    <div class="sidebar-nav">
+      <a href="reservations.html" class="nav-item">
+        <span>📋</span> 预约管理
+      </a>
+      <a href="seats.html" class="nav-item active">
+        <span>🪑</span> 座位管理
+      </a>
+      <a href="statistics.html" class="nav-item">
+        <span>📊</span> 统计
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div style="margin-bottom:4px;">当前用户：admin</div>
+      <a href="login.html">退出登录</a>
+    </div>
+  </div>
+
+  <!-- 内容区 -->
+  <div class="admin-content">
+    <div class="admin-top-bar">
+      <h2 class="page-title">座位管理</h2>
+      <button class="btn btn-primary-custom" onclick="document.getElementById('addModal').classList.add('show')">+ 新增座位</button>
+    </div>
+
+    <div class="admin-body">
+      <!-- 列表区 -->
+      <div style="overflow-x:auto;">
+        <table class="table-admin">
+          <thead>
+            <tr>
+              <th>编号</th>
+              <th>楼层</th>
+              <th>区域</th>
+              <th>座位号</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>2 楼</td>
+              <td>自习区</td>
+              <td>A-01</td>
+              <td><span class="badge-status available">启用</span></td>
+              <td>
+                <button class="btn btn-link-custom" onclick="document.getElementById('editModal').classList.add('show')">编辑</button>
+                <button class="btn btn-link-custom" style="color:#F59E0B;" onclick="if(confirm('确认禁用此座位？'))alert('已禁用');">禁用</button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>2 楼</td>
+              <td>自习区</td>
+              <td>A-02</td>
+              <td><span class="badge-status available">启用</span></td>
+              <td>
+                <button class="btn btn-link-custom" onclick="document.getElementById('editModal').classList.add('show')">编辑</button>
+                <button class="btn btn-link-custom" style="color:#F59E0B;" onclick="if(confirm('确认禁用此座位？'))alert('已禁用');">禁用</button>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>2 楼</td>
+              <td>自习区</td>
+              <td>A-03</td>
+              <td><span class="badge-status occupied">占用</span></td>
+              <td>
+                <button class="btn btn-link-custom" onclick="document.getElementById('editModal').classList.add('show')">编辑</button>
+                <button class="btn btn-link-custom" style="color:#F59E0B;" onclick="if(confirm('确认禁用此座位？'))alert('已禁用');">禁用</button>
+              </td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>3 楼</td>
+              <td>自习区</td>
+              <td>B-01</td>
+              <td><span class="badge-status available">启用</span></td>
+              <td>
+                <button class="btn btn-link-custom" onclick="document.getElementById('editModal').classList.add('show')">编辑</button>
+                <button class="btn btn-link-custom" style="color:#F59E0B;" onclick="if(confirm('确认禁用此座位？'))alert('已禁用');">禁用</button>
+              </td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>3 楼</td>
+              <td>自习区</td>
+              <td>B-02</td>
+              <td><span class="badge-status disabled">禁用</span></td>
+              <td>
+                <button class="btn btn-link-custom" onclick="document.getElementById('editModal').classList.add('show')">编辑</button>
+                <button class="btn btn-link-custom" style="color:#16A34A;" onclick="if(confirm('确认启用此座位？'))alert('已启用');">启用</button>
+              </td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>4 楼</td>
+              <td>电子阅览区</td>
+              <td>C-01</td>
+              <td><span class="badge-status available">启用</span></td>
+              <td>
+                <button class="btn btn-link-custom" onclick="document.getElementById('editModal').classList.add('show')">编辑</button>
+                <button class="btn btn-link-custom" style="color:#F59E0B;" onclick="if(confirm('确认禁用此座位？'))alert('已禁用');">禁用</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 【异常状态演示】空状态链接 -->
+      <div style="text-align:center;margin-top:16px;">
+        <a href="#" onclick="document.querySelector('tbody').innerHTML='';document.querySelector('.admin-top-bar button').style.display='none';this.closest('div').previousElementSibling.innerHTML='<div class=\\'empty-state\\'><div class=\\'empty-icon\\'>🪑</div><div class=\\'empty-text\\'>暂无座位数据</div><div class=\\'empty-sub\\'>请点击右上角\'新增座位\'添加</div></div>';return false;" style="font-size:13px;color:#64748B;">点击演示空状态</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新增座位弹窗 -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-box">
+      <div class="modal-title">新增座位</div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" style="font-size:14px;">楼层</label>
+        <select class="form-input-custom">
+          <option>2 楼</option>
+          <option>3 楼</option>
+          <option selected>4 楼</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" style="font-size:14px;">区域</label>
+        <input type="text" class="form-input-custom" placeholder="如：自习区">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" style="font-size:14px;">座位号</label>
+        <input type="text" class="form-input-custom" placeholder="如：C-02">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline-custom" onclick="document.getElementById('addModal').classList.remove('show')">取消</button>
+        <button class="btn btn-primary-custom" onclick="alert('座位已添加');document.getElementById('addModal').classList.remove('show')">确认添加</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 编辑座位弹窗 -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+      <div class="modal-title">编辑座位</div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" style="font-size:14px;">楼层</label>
+        <select class="form-input-custom">
+          <option selected>2 楼</option>
+          <option>3 楼</option>
+          <option>4 楼</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" style="font-size:14px;">区域</label>
+        <input type="text" class="form-input-custom" value="自习区">
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-bold" style="font-size:14px;">座位号</label>
+        <input type="text" class="form-input-custom" value="A-01">
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline-custom" onclick="document.getElementById('editModal').classList.remove('show')">取消</button>
+        <button class="btn btn-primary-custom" onclick="alert('修改已保存');document.getElementById('editModal').classList.remove('show')">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 点击遮罩关闭弹窗
+    document.querySelectorAll('.modal-overlay').forEach(el => {
+      el.addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('show');
+      });
+    });
+  </script>
+</body>
+</html>

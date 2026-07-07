@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>座位详情 — 图书馆座位预约</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+<body>
+  <div class="app-container">
+    <!-- 顶部栏 -->
+    <div class="user-top-bar">
+      <div class="app-logo">📚 座位预约</div>
+      <div class="user-info">
+        <span class="user-name">学生 A</span>
+        <span style="font-size:12px;color:#2563EB;cursor:pointer;">切换</span>
+        <a href="admin/login.html" style="font-size:12px;color:#64748B;text-decoration:none;margin-left:4px;">管理</a>
+      </div>
+    </div>
+
+    <!-- 返回上一页 -->
+    <div style="padding:8px 16px;border-bottom:1px solid #E2E8F0;background:#fff;">
+      <a href="seats.html" style="color:#64748B;text-decoration:none;font-size:14px;">&larr; 返回座位列表</a>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="px-3 py-3">
+      <!-- 座位信息头 -->
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <h1 style="font-size:20px;font-weight:700;margin:0;">A-01</h1>
+          <div style="font-size:13px;color:#64748B;margin-top:4px;">4 楼 · 电子阅览区 · 靠窗</div>
+        </div>
+        <span class="badge-status available" style="font-size:13px;padding:6px 14px;">空闲</span>
+      </div>
+
+      <!-- 设施标签 -->
+      <div class="d-flex gap-2 mb-3 flex-wrap">
+        <span style="background:#EFF6FF;color:#2563EB;padding:4px 10px;border-radius:4px;font-size:12px;">🔌 有电源</span>
+        <span style="background:#EFF6FF;color:#2563EB;padding:4px 10px;border-radius:4px;font-size:12px;">🪟 靠窗</span>
+        <span style="background:#F8FAFC;color:#64748B;padding:4px 10px;border-radius:4px;font-size:12px;border:1px solid #E2E8F0;">💡 灯光明亮</span>
+      </div>
+
+      <!-- 时段占用 -->
+      <h6 class="fw-bold mb-2" style="font-size:14px;">今日时段占用（2026-07-06）</h6>
+      <div class="card-custom" style="padding:12px 16px;">
+        <div class="timeline-grid">
+          <div class="time-label">08:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">09:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">10:00</div>
+          <div class="time-bar occupied"></div>
+          <div class="time-label">11:00</div>
+          <div class="time-bar occupied"></div>
+          <div class="time-label">12:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">13:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">14:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">15:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">16:00</div>
+          <div class="time-bar occupied"></div>
+          <div class="time-label">17:00</div>
+          <div class="time-bar occupied"></div>
+          <div class="time-label">18:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">19:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">20:00</div>
+          <div class="time-bar"></div>
+          <div class="time-label">21:00</div>
+          <div class="time-bar"></div>
+        </div>
+        <div class="d-flex gap-3 mt-2" style="font-size:12px;color:#64748B;">
+          <span><span style="display:inline-block;width:12px;height:12px;background:#DCFCE7;border:1px solid #16A34A;border-radius:2px;vertical-align:middle;"></span> 空闲</span>
+          <span><span style="display:inline-block;width:12px;height:12px;background:#FEE2E2;border:1px solid #DC2626;border-radius:2px;vertical-align:middle;"></span> 已预约</span>
+        </div>
+      </div>
+
+      <!-- 安全留白 -->
+      <div style="height:80px;"></div>
+    </div>
+
+    <!-- 底部固定按钮 -->
+    <div style="position:fixed;bottom:56px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:12px 16px;background:#fff;border-top:1px solid #E2E8F0;z-index:100;">
+      <a href="reservation-create.html" class="btn btn-primary-custom w-100 text-center d-block" style="text-decoration:none;">
+        预约此座位
+      </a>
+    </div>
+
+    <!-- 底部 Tab 栏 -->
+    <div class="bottom-tab-bar">
+      <a href="index.html" class="tab-item">
+        <span class="tab-icon">🏠</span>
+        <span>首页</span>
+      </a>
+      <a href="seats.html" class="tab-item active">
+        <span class="tab-icon">🪑</span>
+        <span>座位列表</span>
+      </a>
+      <a href="my-reservations.html" class="tab-item">
+        <span class="tab-icon">📋</span>
+        <span>我的预约</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

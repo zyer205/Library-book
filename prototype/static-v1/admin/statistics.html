@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>统计 — 图书馆座位预约</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+<body>
+  <!-- 侧边栏 -->
+  <div class="admin-sidebar">
+    <div class="sidebar-logo">📚 座位预约后台</div>
+    <div class="sidebar-nav">
+      <a href="reservations.html" class="nav-item">
+        <span>📋</span> 预约管理
+      </a>
+      <a href="seats.html" class="nav-item">
+        <span>🪑</span> 座位管理
+      </a>
+      <a href="statistics.html" class="nav-item active">
+        <span>📊</span> 统计
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div style="margin-bottom:4px;">当前用户：admin</div>
+      <a href="login.html">退出登录</a>
+    </div>
+  </div>
+
+  <!-- 内容区 -->
+  <div class="admin-content">
+    <div class="admin-top-bar">
+      <h2 class="page-title">统计概览</h2>
+      <div style="font-size:14px;color:#64748B;">数据更新于 2026-07-06 15:30</div>
+    </div>
+
+    <div class="admin-body">
+      <!-- 数字卡片行 -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="stat-card-lg">
+            <div class="stat-number-lg">24</div>
+            <div class="stat-label-lg">今日预约总数</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card-lg">
+            <div class="stat-number-lg" style="color:#F59E0B;">8</div>
+            <div class="stat-label-lg">当前有效预约（待使用）</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card-lg">
+            <div class="stat-number-lg" style="color:#16A34A;">57%</div>
+            <div class="stat-label-lg">座位使用率</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 使用率按楼层分布 -->
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card-custom">
+            <div class="card-title">各楼层座位使用率</div>
+            <div class="bar-chart">
+              <div class="bar-item">
+                <div class="bar-label">2 楼</div>
+                <div class="bar-fill"><div class="bar-value" style="width:45%;"></div></div>
+                <div class="bar-percent">45%</div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-label">3 楼</div>
+                <div class="bar-fill"><div class="bar-value" style="width:62%;"></div></div>
+                <div class="bar-percent">62%</div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-label">4 楼</div>
+                <div class="bar-fill"><div class="bar-value" style="width:38%;"></div></div>
+                <div class="bar-percent">38%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card-custom">
+            <div class="card-title">预约状态分布</div>
+            <div class="bar-chart">
+              <div class="bar-item">
+                <div class="bar-label">待使用</div>
+                <div class="bar-fill"><div class="bar-value" style="width:33%;background:#F59E0B;"></div></div>
+                <div class="bar-percent">8</div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-label">已完成</div>
+                <div class="bar-fill"><div class="bar-value" style="width:46%;background:#16A34A;"></div></div>
+                <div class="bar-percent">11</div>
+              </div>
+              <div class="bar-item">
+                <div class="bar-label">已取消</div>
+                <div class="bar-fill"><div class="bar-value" style="width:21%;background:#DC2626;"></div></div>
+                <div class="bar-percent">5</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:#64748B;margin-top:12px;">总计 24 条预约</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的预约 — 图书馆座位预约</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+<body>
+  <div class="app-container">
+    <!-- 顶部栏 -->
+    <div class="user-top-bar">
+      <div class="app-logo">📚 座位预约</div>
+      <div class="user-info">
+        <span class="user-name">学生 A</span>
+        <span style="font-size:12px;color:#2563EB;cursor:pointer;">切换</span>
+        <a href="admin/login.html" style="font-size:12px;color:#64748B;text-decoration:none;margin-left:4px;">管理</a>
+      </div>
+    </div>
+
+    <!-- 页面标题 -->
+    <div class="page-header">
+      <h1>我的预约</h1>
+      <div class="subtitle">共 3 条预约记录</div>
+    </div>
+
+    <!-- 主要内容：有数据状态 -->
+    <div class="px-3 py-3" id="has-data">
+      <!-- 预约卡片 1 - 待使用 -->
+      <div class="reservation-card">
+        <div class="reservation-header">
+          <div>
+            <div class="seat-name">A-01 · 4 楼电子阅览区</div>
+            <div class="reservation-time">2026-07-07 08:00 - 11:00</div>
+          </div>
+          <span class="badge-status pending">待使用</span>
+        </div>
+        <div class="reservation-footer">
+          <span style="font-size:12px;color:#64748B;">预约于 2026-07-06 14:30</span>
+          <button class="btn btn-danger-custom btn-sm" onclick="if(confirm('确认取消此预约？')){this.closest('.reservation-card').remove();document.getElementById('has-data').style.display='none';document.getElementById('empty-state').style.display='block';}">
+            取消预约
+          </button>
+        </div>
+      </div>
+
+      <!-- 预约卡片 2 - 已完成 -->
+      <div class="reservation-card">
+        <div class="reservation-header">
+          <div>
+            <div class="seat-name">B-02 · 3 楼自习区</div>
+            <div class="reservation-time">2026-07-06 14:00 - 17:00</div>
+          </div>
+          <span class="badge-status done">已完成</span>
+        </div>
+        <div class="reservation-footer">
+          <span style="font-size:12px;color:#64748B;">预约于 2026-07-05 20:15</span>
+          <span style="font-size:12px;color:#16A34A;">✅ 已签到</span>
+        </div>
+      </div>
+
+      <!-- 预约卡片 3 - 已取消 -->
+      <div class="reservation-card">
+        <div class="reservation-header">
+          <div>
+            <div class="seat-name">C-03 · 2 楼自习区</div>
+            <div class="reservation-time">2026-07-05 09:00 - 12:00</div>
+          </div>
+          <span class="badge-status cancelled">已取消</span>
+        </div>
+        <div class="reservation-footer">
+          <span style="font-size:12px;color:#64748B;">预约于 2026-07-04 10:00</span>
+          <span style="font-size:12px;color:#DC2626;">已取消</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 空状态（默认隐藏，通过点击"取消预约"触发演示） -->
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="empty-icon">📭</div>
+      <div class="empty-text">你还没有预约记录</div>
+      <div class="empty-sub">去预约一个座位，开始你的学习吧</div>
+      <a href="seats.html" class="btn btn-primary-custom">去预约</a>
+    </div>
+
+    <div class="safe-bottom"></div>
+
+    <!-- 底部 Tab 栏 -->
+    <div class="bottom-tab-bar">
+      <a href="index.html" class="tab-item">
+        <span class="tab-icon">🏠</span>
+        <span>首页</span>
+      </a>
+      <a href="seats.html" class="tab-item">
+        <span class="tab-icon">🪑</span>
+        <span>座位列表</span>
+      </a>
+      <a href="my-reservations.html" class="tab-item active">
+        <span class="tab-icon">📋</span>
+        <span>我的预约</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>座位列表 — 图书馆座位预约</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+<body>
+  <div class="app-container">
+    <!-- 顶部栏 -->
+    <div class="user-top-bar">
+      <div class="app-logo">📚 座位预约</div>
+      <div class="user-info">
+        <span class="user-name">学生 A</span>
+        <span style="font-size:12px;color:#2563EB;cursor:pointer;">切换</span>
+        <a href="admin/login.html" style="font-size:12px;color:#64748B;text-decoration:none;margin-left:4px;">管理</a>
+      </div>
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="filter-bar">
+      <select>
+        <option>全部楼层</option>
+        <option>2 楼</option>
+        <option>3 楼</option>
+        <option>4 楼</option>
+      </select>
+      <select>
+        <option>全部区域</option>
+        <option>自习区</option>
+        <option>电子阅览区</option>
+        <option>期刊区</option>
+      </select>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="px-3 py-3">
+      <div style="font-size:12px;color:#64748B;margin-bottom:12px;">共 12 个座位 · 4 楼 电子阅览区</div>
+
+      <!-- 座位卡片列表 -->
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">A-01</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 靠窗</div>
+        </div>
+        <span class="badge-status available">空闲</span>
+      </a>
+
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">A-02</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 中间</div>
+        </div>
+        <span class="badge-status occupied">占用</span>
+      </a>
+
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">A-03</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 靠窗</div>
+        </div>
+        <span class="badge-status available">空闲</span>
+      </a>
+
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">A-04</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 靠墙</div>
+        </div>
+        <span class="badge-status occupied">占用</span>
+      </a>
+
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">A-05</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 中间</div>
+        </div>
+        <span class="badge-status available">空闲</span>
+      </a>
+
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">B-01</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 双人位左</div>
+        </div>
+        <span class="badge-status available">空闲</span>
+      </a>
+
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">B-02</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 双人位右</div>
+        </div>
+        <span class="badge-status available">空闲</span>
+      </a>
+
+      <a href="seat-detail.html" class="seat-card">
+        <div class="seat-info">
+          <div class="seat-number">B-03</div>
+          <div class="seat-location">4 楼 · 电子阅览区 · 靠窗</div>
+        </div>
+        <span class="badge-status occupied">占用</span>
+      </a>
+
+      <div class="safe-bottom"></div>
+    </div>
+
+    <!-- 底部 Tab 栏 -->
+    <div class="bottom-tab-bar">
+      <a href="index.html" class="tab-item">
+        <span class="tab-icon">🏠</span>
+        <span>首页</span>
+      </a>
+      <a href="seats.html" class="tab-item active">
+        <span class="tab-icon">🪑</span>
+        <span>座位列表</span>
+      </a>
+      <a href="my-reservations.html" class="tab-item">
+        <span class="tab-icon">📋</span>
+        <span>我的预约</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

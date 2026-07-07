@@ -32,12 +32,15 @@ git push -u origin main
 
 | 项目 | 状态 |
 |------|------|
-| 本地仓库 | ✅ 已初始化，已创建初始 commit（49 个文件） |
-| 远程仓库 | ⚠️ 推送失败 — `Failed to connect to github.com` |
-| 原因 | 当前网络无法直连 `github.com`（可能需配置代理或 VPN） |
-| 解决方案 | ① 配置 Git 代理：`git config --global http.proxy http://127.0.0.1:7890` ② 重试推送：`git push -u origin main` ③ 或改用 Gitee 镜像仓库，修改 `origin` 地址 |
+| 本地仓库 | ✅ 已初始化，已创建初始 commit（45 个文件，不含 .omo/） |
+| 远程仓库 | ✅ 已推送至 `https://github.com/zyer205/Library-book.git` `main` 分支 |
 
-> 推送修复前可先在本地正常开发，推送到远端不是 Sprint 0 的前置条件。
+> 初始推送时如遇代理问题，尝试清除 Git 代理配置后重试：
+> ```bash
+> git config --global --unset http.proxy
+> git config --global --unset https.proxy
+> git push -u origin main
+> ```
 
 ---
 

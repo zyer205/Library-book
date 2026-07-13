@@ -22,7 +22,7 @@ public class AdminSeatsController : Controller
     {
         if (!IsAdmin()) return Redirect("/Admin/Login");
 
-        var seats = await _seatService.GetAllAsync();
+        var seats = await _seatService.GetAllSeatsAsync();
         var viewModel = new AdminSeatsViewModel { Seats = seats };
         return View("~/Views/Admin/Seats.cshtml", viewModel);
     }
@@ -46,7 +46,9 @@ public class AdminSeatsController : Controller
 
         var result = await _seatService.CreateAsync(seat);
 
-        if (!result.Success)
+        if (result.Success)
+            TempData["Success"] = "座位已添加";
+        else
             TempData["Error"] = result.ErrorMessage;
 
         return Redirect("/Admin/Seats");
@@ -91,7 +93,9 @@ public class AdminSeatsController : Controller
 
         var result = await _seatService.UpdateAsync(seat);
 
-        if (!result.Success)
+        if (result.Success)
+            TempData["Success"] = "座位已更新";
+        else
             TempData["Error"] = result.ErrorMessage;
 
         return Redirect("/Admin/Seats");
@@ -105,7 +109,9 @@ public class AdminSeatsController : Controller
 
         var result = await _seatService.ToggleEnabledAsync(id);
 
-        if (!result.Success)
+        if (result.Success)
+            TempData["Success"] = "座位状态已切换";
+        else
             TempData["Error"] = result.ErrorMessage;
 
         return Redirect("/Admin/Seats");

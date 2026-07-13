@@ -96,6 +96,14 @@ public class SeatService : ISeatService
         return slots;
     }
 
+    public async Task<List<Seat>> GetAllSeatsAsync()
+    {
+        return await _context.Seats
+            .OrderBy(s => s.Floor)
+            .ThenBy(s => s.SeatNumber)
+            .ToListAsync();
+    }
+
     public async Task<(bool Success, string ErrorMessage)> CreateAsync(Seat seat)
     {
         try

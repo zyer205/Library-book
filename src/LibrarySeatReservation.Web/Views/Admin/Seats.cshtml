@@ -42,6 +42,7 @@ else
                             </span>
                         </td>
                         <td>
+                            <a href="/Admin/Seats/Edit/@seat.Id" class="btn btn-sm btn-outline-primary me-1">编辑</a>
                             <form asp-action="Toggle" asp-route-id="@seat.Id" method="post" style="display:inline">
                                 <button type="submit" class="btn btn-sm @(seat.IsEnabled ? "btn-warning" : "btn-success")">
                                     @(seat.IsEnabled ? "禁用" : "启用")

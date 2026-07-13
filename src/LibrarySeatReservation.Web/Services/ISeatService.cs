@@ -9,6 +9,7 @@ public interface ISeatService
     Task<int> GetAvailableCountAsync();
     Task<List<string>> GetDistinctFloorsAsync();
     Task<List<Seat>> GetAllAsync(string floor = null);
+    Task<List<Seat>> GetAllSeatsAsync();
     Task<bool> IsOccupiedNowAsync(int seatId);
     Task<Seat?> GetByIdAsync(int id);
     Task<List<TimeSlotVM>> GetTimeSlotsAsync(int seatId, DateTime date);

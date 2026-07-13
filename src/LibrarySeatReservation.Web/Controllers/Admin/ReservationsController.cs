@@ -41,7 +41,9 @@ public class ReservationsController : Controller
 
         var result = await _reservationService.MarkDoneAsync(id);
 
-        if (!result.Success)
+        if (result.Success)
+            TempData["Success"] = "预约已标记为完成";
+        else
             TempData["Error"] = result.ErrorMessage;
 
         return Redirect("/Admin/Reservations");
@@ -55,7 +57,9 @@ public class ReservationsController : Controller
 
         var result = await _reservationService.AdminCancelAsync(id);
 
-        if (!result.Success)
+        if (result.Success)
+            TempData["Success"] = "预约已取消";
+        else
             TempData["Error"] = result.ErrorMessage;
 
         return Redirect("/Admin/Reservations");

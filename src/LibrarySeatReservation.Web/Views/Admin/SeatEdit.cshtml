@@ -1,0 +1,43 @@
+@model SeatEditViewModel
+@{
+    ViewData["Title"] = "编辑座位";
+    Layout = "~/Views/Admin/Shared/_Layout.cshtml";
+}
+
+<h2>编辑座位</h2>
+
+<form method="post" class="needs-validation col-md-6" novalidate>
+    <div class="mb-3">
+        <label class="form-label">楼层</label>
+        <input type="text" class="form-control" asp-for="Floor" required />
+        <div class="invalid-feedback">请填写楼层</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">区域</label>
+        <input type="text" class="form-control" asp-for="Area" required />
+        <div class="invalid-feedback">请填写区域</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">座位编号</label>
+        <input type="text" class="form-control" asp-for="SeatNumber" required />
+        <div class="invalid-feedback">请填写座位编号</div>
+    </div>
+    <button type="submit" class="btn btn-primary">保存</button>
+    <a href="/Admin/Seats" class="btn btn-outline-secondary">取消</a>
+</form>
+
+<script>
+    (function() {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>

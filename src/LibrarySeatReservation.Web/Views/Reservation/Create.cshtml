@@ -1,0 +1,100 @@
+@model ReservationCreateViewModel
+@{
+    ViewData["Title"] = "预约座位";
+}
+
+<h2>预约座位</h2>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5>@Model.SeatNumber</h5>
+        <p class="text-muted">@Model.Floor · @Model.Area</p>
+    </div>
+</div>
+
+<form method="post" class="needs-validation" novalidate>
+    <input type="hidden" asp-for="SeatId" />
+    <input type="hidden" asp-for="UserName" />
+
+    <div class="mb-3">
+        <label class="form-label">选择日期</label>
+        <input type="date" class="form-control" asp-for="SelectedDate"
+               min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+        <div class="invalid-feedback">请选择日期</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">选择时段</label>
+        <div class="row g-2">
+            @for (int i = 0; i < Model.AvailableTimeSlots.Count; i++)
+            {
+                var slot = Model.AvailableTimeSlots[i];
+                <div class="col-md-3 col-sm-4 col-6">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input time-slot"
+                               data-start="@slot.StartTime.ToString("HH:mm")"
+                               data-end="@slot.EndTime.ToString("HH:mm")"
+                               @(slot.IsOccupied ? "disabled" : "") />
+                        <label class="form-check-label @(slot.IsOccupied ? "text-muted text-decoration-line-through" : "")">
+                            @slot.Label
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+        <input type="hidden" asp-for="StartTimeSpan" />
+        <input type="hidden" asp-for="EndTimeSpan" />
+        <div class="invalid-feedback" id="slotError">请至少选择一个时段</div>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <p class="mb-0">@error.ErrorMessage</p>
+            }
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">提交预约</button>
+    <a asp-controller="Seats" asp-action="Detail" asp-route-id="@Model.SeatId" class="btn btn-outline-secondary">取消</a>
+</form>
+
+@section Scripts {
+    <script>
+            (function() {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    var checked = form.querySelectorAll('.time-slot:checked');
+                    var startInput = form.querySelector('#StartTimeSpan');
+                    var endInput = form.querySelector('#EndTimeSpan');
+
+                    if (checked.length > 0) {
+                        var minTime = '23:59', maxTime = '00:00';
+                        checked.forEach(function(cb) {
+                            var s = cb.dataset.start;
+                            var e = cb.dataset.end;
+                            if (s < minTime) minTime = s;
+                            if (e > maxTime) maxTime = e;
+                        });
+                        startInput.value = minTime;
+                        endInput.value = maxTime;
+                    } else {
+                        startInput.value = '';
+                        endInput.value = '';
+                    }
+
+                    if (!form.checkValidity() || checked.length === 0) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        document.getElementById('slotError').style.display = checked.length === 0 ? 'block' : 'none';
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

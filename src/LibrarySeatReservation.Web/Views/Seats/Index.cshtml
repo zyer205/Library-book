@@ -1,0 +1,56 @@
+@model SeatsIndexViewModel
+@{
+    ViewData["Title"] = "座位列表";
+}
+
+<h2>座位列表</h2>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <form method="get" class="d-flex gap-2">
+            <select name="floor" class="form-select" onchange="this.form.submit()">
+                <option value="">全部楼层</option>
+                @foreach (var f in Model.Floors)
+                {
+                    <option value="@f" selected="@(f == Model.CurrentFloor)">@f</option>
+                }
+            </select>
+        </form>
+    </div>
+    <div class="col-md-8 text-end">
+        @if (Model.IsGuest)
+        {
+            <span class="text-muted">请先选择身份以预约座位</span>
+        }
+    </div>
+</div>
+
+@if (Model.Seats.Count == 0)
+{
+    <div class="text-center mt-5 py-5">
+        <div class="display-1 text-muted mb-3">🪑</div>
+        <h4 class="text-muted">当前楼层暂无座位</h4>
+        <p class="text-muted">试试切换其他楼层</p>
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var seat in Model.Seats)
+        {
+            <div class="col-md-3 col-sm-6">
+                <div class="card @(seat.IsOccupied ? "border-warning" : "border-success") shadow-sm">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@seat.SeatNumber</h5>
+                        <p class="card-text small text-muted">@seat.Floor · @seat.Area</p>
+                        <span class="badge @(seat.IsOccupied ? "bg-warning text-dark" : "bg-success") mb-2 d-inline-block">
+                            @(seat.IsOccupied ? "占用" : "空闲")
+                        </span>
+                        <br />
+                        <a asp-action="Detail" asp-route-id="@seat.Id" class="btn btn-sm btn-outline-primary mt-1">查看详情</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

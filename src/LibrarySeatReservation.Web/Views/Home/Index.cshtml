@@ -1,0 +1,73 @@
+﻿@model HomeIndexViewModel
+@{
+    ViewData["Title"] = Model.IsLoggedIn ? "仪表板" : "欢迎";
+}
+
+@if (!Model.IsLoggedIn)
+{
+    <div class="text-center mt-5">
+        <h1 class="display-4 mb-4">📚 图书馆座位预约系统</h1>
+        <p class="lead mb-5">请选择您的身份以继续</p>
+        <div class="row justify-content-center g-4">
+            @foreach (var user in Model.Users)
+            {
+                <div class="col-md-4 col-sm-6">
+                    <div class="card h-100 shadow-sm" style="cursor:pointer; border-left: 4px solid @user.AvatarColor;">
+                        <div class="card-body text-center">
+                            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                 style="width:64px;height:64px;background:@user.AvatarColor;color:white;font-size:24px;">
+                                @user.Name[0]
+                            </div>
+                            <h5 class="card-title">@user.Name</h5>
+                            <p class="card-text text-muted">@user.Role</p>
+                            <form asp-controller="Account" asp-action="Switch" method="post">
+                                <input type="hidden" name="userName" value="@user.Name" />
+                                <button type="submit" class="btn btn-primary w-100">以 @user.Name 身份进入</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="mt-4">
+            <a href="/Admin/Login" class="btn btn-outline-secondary">管理员入口</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="mt-4">
+        <h2>👋 欢迎回来，@Model.CurrentUserName</h2>
+        <p class="text-muted">今天也要好好学习哦</p>
+        <div class="row g-4 mt-3">
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="display-6 text-primary">@Model.TotalSeats</h3>
+                        <p class="card-text">总座位数</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="display-6 text-success">@Model.AvailableSeats</h3>
+                        <p class="card-text">当前空闲</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h3 class="display-6 text-info">@Model.TodayReservations</h3>
+                        <p class="card-text">今日预约</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 d-flex gap-3">
+            <a asp-controller="Seats" asp-action="Index" class="btn btn-primary btn-lg">预约座位</a>
+            <a asp-controller="Reservation" asp-action="My" class="btn btn-outline-primary btn-lg">我的预约</a>
+        </div>
+    </div>
+}

@@ -1,0 +1,53 @@
+@model AdminStatisticsViewModel
+@{
+    ViewData["Title"] = "统计";
+    Layout = "~/Views/Admin/Shared/_Layout.cshtml";
+}
+
+<h2>统计</h2>
+
+@if (Model.TotalReservations == 0)
+{
+    <div class="text-center mt-5 py-5">
+        <div class="display-1 text-muted mb-3">📊</div>
+        <h4 class="text-muted">暂无数据</h4>
+        <p class="text-muted">请先添加座位和预约记录</p>
+    </div>
+}
+else
+{
+    <div class="row g-4 mt-2">
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3 class="display-6 text-primary">@Model.TodayReservations</h3>
+                    <p class="card-text">今日预约数</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3 class="display-6 text-warning">@Model.ActiveReservations</h3>
+                    <p class="card-text">当前有效预约</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3 class="display-6 text-info">@Model.SeatUsageRate%</h3>
+                    <p class="card-text">座位使用率</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h3 class="display-6 text-secondary">@Model.TotalReservations</h3>
+                    <p class="card-text">历史总预约</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

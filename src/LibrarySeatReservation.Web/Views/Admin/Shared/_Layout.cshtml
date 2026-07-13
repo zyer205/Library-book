@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - 管理后台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar for desktop -->
+            <div class="col-md-2 d-none d-md-block bg-dark text-white vh-100 p-3 admin-sidebar">
+                <h5 class="mb-4">📚 管理后台</h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link text-white" href="/Admin/Reservations">📋 预约管理</a>
+                    <a class="nav-link text-white" href="/Admin/Seats">🪑 座位管理</a>
+                    <a class="nav-link text-white" href="/Admin/Statistics">📊 统计</a>
+                    <hr class="text-secondary" />
+                    <a class="nav-link text-white-50" href="/">← 返回前台</a>
+                    <form asp-controller="Login" asp-action="Logout" method="post" class="mt-2">
+                        <button type="submit" class="btn btn-outline-light btn-sm w-100">退出登录</button>
+                    </form>
+                </nav>
+            </div>
+            <!-- Main content -->
+            <div class="col-md-10 admin-content p-4">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <!-- Mobile top bar -->
+    <nav class="navbar navbar-dark bg-dark d-md-none">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h5">📚 管理后台</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminMobileNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="collapse d-md-none" id="adminMobileNav">
+        <div class="bg-dark text-white p-3">
+            <a class="d-block text-white py-2" href="/Admin/Reservations">📋 预约管理</a>
+            <a class="d-block text-white py-2" href="/Admin/Seats">🪑 座位管理</a>
+            <a class="d-block text-white py-2" href="/Admin/Statistics">📊 统计</a>
+            <a class="d-block text-white-50 py-2" href="/">← 返回前台</a>
+            <form asp-controller="Login" asp-action="Logout" method="post" class="mt-2">
+                <button type="submit" class="btn btn-outline-light btn-sm w-100">退出登录</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

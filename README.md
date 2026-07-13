@@ -9,9 +9,9 @@
 
 | 层 | 选型 | 版本要求 |
 |----|------|---------|
-| 后端框架 | ASP.NET Core MVC | .NET 8 |
-| 视图引擎 | Razor | .NET 8 内建 |
-| ORM | Entity Framework Core | 8.x |
+| 后端框架 | ASP.NET Core MVC | .NET 9 |
+| 视图引擎 | Razor | .NET 9 内建 |
+| ORM | Entity Framework Core | 9.x |
 | 数据库 | SQL Server LocalDB | 随 VS2022 安装 |
 | 前端样式 | Bootstrap 5 | 5.3.2 CDN |
 | 前端交互 | 原生 JavaScript | — |
@@ -42,60 +42,74 @@ LibrarySeatSystem/
 └── README.md                           # 本文件
 ```
 
-### 后续计划 / 待生成（Sprint 0 产物）
+### 实际目录结构（Sprint 0 产出）
 
 ```
-LibrarySeatSystem/
-├── LibrarySeatSystem.sln               # 解决方案文件
-├── LibrarySeatSystem/                  # Web 项目目录
-│   ├── Program.cs                      # 应用入口
-│   ├── appsettings.json                # 连接字符串与配置
-│   ├── Controllers/                    # 控制器层
-│   │   ├── HomeController.cs
-│   │   ├── SeatsController.cs
-│   │   ├── ReservationController.cs
-│   │   ├── AccountController.cs
-│   │   └── Admin/
-│   │       ├── LoginController.cs
-│   │       ├── ReservationsController.cs
-│   │       └── SeatsController.cs
-│   ├── Models/                         # 数据层
-│   │   ├── Entities/                   #   实体类
-│   │   │   ├── Seat.cs
-│   │   │   ├── Reservation.cs
-│   │   │   └── Admin.cs
-│   │   ├── ViewModels/                 #   视图模型
-│   │   │   ├── HomeIndexViewModel.cs
-│   │   │   ├── SeatsIndexViewModel.cs
-│   │   │   ├── SeatDetailViewModel.cs
-│   │   │   ├── ReservationCreateViewModel.cs
-│   │   │   ├── MyReservationsViewModel.cs
-│   │   │   ├── LoginViewModel.cs
-│   │   │   ├── AdminReservationsViewModel.cs
-│   │   │   └── AdminSeatsViewModel.cs
-│   │   └── AppDbContext.cs
-│   ├── Services/                       # 业务逻辑层
-│   │   ├── ISeatService.cs
-│   │   ├── SeatService.cs
-│   │   ├── IReservationService.cs
-│   │   └── ReservationService.cs
-│   ├── Views/                          # Razor 视图
-│   │   ├── Shared/_Layout.cshtml
-│   │   ├── Home/Index.cshtml
-│   │   ├── Seats/Index.cshtml
-│   │   ├── Seats/Detail.cshtml
-│   │   ├── Reservation/Create.cshtml
-│   │   ├── Reservation/My.cshtml
-│   │   └── Admin/
-│   │       ├── Shared/_Layout.cshtml
-│   │       ├── Login.cshtml
-│   │       ├── Reservations.cshtml
-│   │       ├── Seats.cshtml
-│   │       └── Statistics.cshtml (P2)
-│   ├── wwwroot/
-│   │   └── css/site.css
-│   └── Data/
-│       └── SeedData.cs
+LibrarySeatReservation/
+├── LibrarySeatReservation.sln           # 解决方案文件
+├── src/
+│   └── LibrarySeatReservation.Web/      # Web 项目目录
+│       ├── Program.cs                   # 应用入口
+│       ├── appsettings.json             # 连接字符串与配置
+│       ├── Controllers/                 # 控制器层
+│       │   ├── HomeController.cs
+│       │   ├── SeatsController.cs
+│       │   ├── ReservationController.cs
+│       │   ├── AccountController.cs
+│       │   └── Admin/
+│       │       ├── LoginController.cs
+│       │       ├── ReservationsController.cs
+│       │       ├── SeatsController.cs
+│       │       └── StatisticsController.cs
+│       ├── Models/                      # 数据层
+│       │   ├── Entities/                #   实体类
+│       │   │   ├── Seat.cs
+│       │   │   ├── Reservation.cs
+│       │   │   └── Admin.cs
+│       │   ├── ViewModels/              #   视图模型
+│       │   │   ├── HomeIndexViewModel.cs
+│       │   │   ├── SeatsIndexViewModel.cs
+│       │   │   ├── SeatDetailViewModel.cs
+│       │   │   ├── ReservationCreateViewModel.cs
+│       │   │   ├── MyReservationsViewModel.cs
+│       │   │   ├── LoginViewModel.cs
+│       │   │   ├── AdminReservationsViewModel.cs
+│       │   │   ├── AdminSeatsViewModel.cs
+│       │   │   ├── SeatCreateViewModel.cs
+│       │   │   ├── SeatEditViewModel.cs
+│       │   │   └── AdminStatisticsViewModel.cs
+│       │   └── AppDbContext.cs
+│       ├── Services/                    # 业务逻辑层
+│       │   ├── ISeatService.cs
+│       │   ├── SeatService.cs
+│       │   ├── IReservationService.cs
+│       │   └── ReservationService.cs
+│       ├── Views/                       # Razor 视图
+│       │   ├── _ViewImports.cshtml
+│       │   ├── Shared/_Layout.cshtml
+│       │   ├── Home/Index.cshtml
+│       │   ├── Seats/Index.cshtml
+│       │   ├── Seats/Detail.cshtml
+│       │   ├── Reservation/Create.cshtml
+│       │   ├── Reservation/My.cshtml
+│       │   └── Admin/
+│       │       ├── Shared/_Layout.cshtml
+│       │       ├── Login.cshtml
+│       │       ├── Reservations.cshtml
+│       │       ├── Seats.cshtml
+│       │       ├── SeatEdit.cshtml
+│       │       └── Statistics.cshtml
+│       ├── wwwroot/
+│       │   └── css/site.css
+│       └── Data/
+│           └── SeedData.cs
+├── docs/                                # 设计文档（1~12 系列）
+│   ├── 01-项目立项单.md
+│   ├── ...
+│   └── 12-开发起步与骨架记录.md
+├── prototype/                           # 静态原型 HTML
+│   └── static-v1/
+└── README.md                            # 本文件
 ```
 
 ---
@@ -107,24 +121,23 @@ LibrarySeatSystem/
 | 软件 | 版本要求 | 用途 |
 |------|---------|------|
 | Visual Studio 2022 | 17.8+（社区版即可） | 开发 IDE，自带项目模板 |
-| .NET SDK | 8.0 | ASP.NET Core 运行时 |
+| .NET SDK | 9.0 | ASP.NET Core 运行时 |
 | SQL Server LocalDB | 随 VS2022 自动安装 | 本地数据库 |
 | Git | 最新版 | 版本控制 |
 
 **验证安装命令：**
 
 ```bash
-dotnet --version               # 应显示 8.x
-dotnet --list-sdks              # 确认 8.0 SDK 存在
+dotnet --version               # 应显示 9.x
+dotnet --list-sdks              # 确认 9.0 SDK 存在
 ```
 
 ---
 
 ## 当前阶段
 
-**开发准备与 Sprint 0 规划阶段** — 已完成全部设计文档输出（doc 01~10），待执行 Sprint 0（项目骨架搭建）。
-
-> 具体任务分配见 `docs/项目任务板与迭代记录.md`，Sprint 0 详细规划见 `docs/10-开发准备与Sprint0.md`。
+**Sprint 1 已完成 ✅ — 用户端主链路已打通**
+> 具体任务完成记录见 `docs/13-用户端主链路开发记录.md`，Sprint 1 任务卡见 `docs/项目任务板与迭代记录.md`。
 
 ---
 
@@ -134,11 +147,9 @@ dotnet --list-sdks              # 确认 8.0 SDK 存在
 
 | Sprint | 范围 | 完成日期 |
 |--------|------|---------|
-| Sprint 0 | 项目骨架搭建、数据库初始化、Seed Data | — |
-| Sprint 1 | 用户端核心功能（身份切换、座位列表、预约提交、我的预约、取消） | — |
-| Sprint 2 | 管理端功能（登录、预约管理、座位管理） | — |
-| Sprint 3 | 联调、缺陷修复、静态原型审计修复项落实 | — |
-| Sprint 2 | 管理端功能（登录、预约管理、座位管理、**统计页**） | — |
+| Sprint 0 | 项目骨架搭建、数据库初始化、Seed Data | 2026-07-13 |
+| Sprint 1 | 用户端核心功能（身份切换、座位列表、预约提交、我的预约、取消） | 2026-07-13 |
+| Sprint 2 | 管理端功能（登录、预约管理、座位管理、统计页） | — |
 | Sprint 3 | 联调、缺陷修复、静态原型审计修复项落实 | — |
 | Sprint 4（缓冲） | 样式调整、部署文档 | — |
 
@@ -146,17 +157,16 @@ dotnet --list-sdks              # 确认 8.0 SDK 存在
 
 ## 数据库初始化方式
 
-<!-- Sprint 0 执行后更新具体命令 -->
+程序首次启动时自动执行迁移 + 种子数据。
 
 ```bash
-# 在程序启动时自动执行迁移 + Seed Data
-Update-Database                   # 或
+# 如需手动重建数据库，在项目目录下执行：
 dotnet ef database update
 ```
 
-Seed Data 包含：
-- 管理员 1 个：`admin` / `admin123`
-- 座位 15~20 个，覆盖 2~3 个楼层
+Seed Data 已包含：
+- 管理员 1 个：`admin` / `admin123`（存入 Admins 表）
+- 座位 20 个，覆盖 2 楼（自习区 5 + A 区 5）和 3 楼（期刊阅览区 5 + B 区 5）
 - 体验账号（前端硬编码）：学生 A、学生 B、学生 C
 
 ---

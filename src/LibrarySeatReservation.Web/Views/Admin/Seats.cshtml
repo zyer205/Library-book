@@ -1,0 +1,107 @@
+@model AdminSeatsViewModel
+@{
+    ViewData["Title"] = "座位管理";
+    Layout = "~/Views/Admin/Shared/_Layout.cshtml";
+}
+
+<h2>座位管理</h2>
+
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createModal">+ 新增座位</button>
+
+@if (Model.Seats.Count == 0)
+{
+    <div class="text-center mt-5 py-5">
+        <div class="display-1 text-muted mb-3">🪑</div>
+        <h4 class="text-muted">暂无座位数据</h4>
+        <p class="text-muted">请点击"新增座位"添加</p>
+    </div>
+}
+else
+{
+    <div style="overflow-x:auto;">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>楼层</th>
+                    <th>区域</th>
+                    <th>启用</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seat in Model.Seats)
+                {
+                    <tr>
+                        <td>@seat.SeatNumber</td>
+                        <td>@seat.Floor</td>
+                        <td>@seat.Area</td>
+                        <td>
+                            <span class="badge @(seat.IsEnabled ? "bg-success" : "bg-secondary")">
+                                @(seat.IsEnabled ? "启用" : "禁用")
+                            </span>
+                        </td>
+                        <td>
+                            <form asp-action="Toggle" asp-route-id="@seat.Id" method="post" style="display:inline">
+                                <button type="submit" class="btn btn-sm @(seat.IsEnabled ? "btn-warning" : "btn-success")">
+                                    @(seat.IsEnabled ? "禁用" : "启用")
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-action="Create" class="needs-validation" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title">新增座位</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">楼层</label>
+                        <input type="text" class="form-control" name="Floor" required placeholder="如：2 楼" />
+                        <div class="invalid-feedback">请填写楼层</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">区域</label>
+                        <input type="text" class="form-control" name="Area" required placeholder="如：自习区" />
+                        <div class="invalid-feedback">请填写区域</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">座位编号</label>
+                        <input type="text" class="form-control" name="SeatNumber" required placeholder="如：ZX-01" />
+                        <div class="invalid-feedback">请填写座位编号</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>

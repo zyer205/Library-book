@@ -17,7 +17,7 @@ public class ReservationsController : Controller
     private bool IsAdmin() => HttpContext.Session.GetInt32("IsAdmin") == 1;
 
     [HttpGet]
-    public async Task<IActionResult> Index(string status = null)
+    public async Task<IActionResult> Index(string? status = null)
     {
         if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 

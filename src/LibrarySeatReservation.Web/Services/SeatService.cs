@@ -43,7 +43,7 @@ public class SeatService : ISeatService
             .ToListAsync();
     }
 
-    public async Task<List<Seat>> GetAllAsync(string floor = null)
+    public async Task<List<Seat>> GetAllAsync(string? floor = null)
     {
         var query = _context.Seats.Where(s => s.IsEnabled);
         if (!string.IsNullOrEmpty(floor))
@@ -117,7 +117,7 @@ public class SeatService : ISeatService
             .ToListAsync();
     }
 
-    public async Task<(bool Success, string ErrorMessage)> CreateAsync(Seat seat)
+    public async Task<(bool Success, string? ErrorMessage)> CreateAsync(Seat seat)
     {
         try
         {
@@ -131,7 +131,7 @@ public class SeatService : ISeatService
         }
     }
 
-    public async Task<(bool Success, string ErrorMessage)> UpdateAsync(Seat seat)
+    public async Task<(bool Success, string? ErrorMessage)> UpdateAsync(Seat seat)
     {
         try
         {
@@ -151,7 +151,7 @@ public class SeatService : ISeatService
         }
     }
 
-    public async Task<(bool Success, string ErrorMessage)> ToggleEnabledAsync(int id)
+    public async Task<(bool Success, string? ErrorMessage)> ToggleEnabledAsync(int id)
     {
         var seat = await _context.Seats.FindAsync(id);
         if (seat == null)

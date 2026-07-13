@@ -14,7 +14,7 @@ public class SeatsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(string floor = null)
+    public async Task<IActionResult> Index(string? floor = null)
     {
         var userName = HttpContext.Session.GetString("UserName");
         var isGuest = string.IsNullOrEmpty(userName);

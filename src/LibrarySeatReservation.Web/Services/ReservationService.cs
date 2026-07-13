@@ -13,7 +13,7 @@ public class ReservationService : IReservationService
         _context = context;
     }
 
-    public async Task<(bool Success, string ErrorMessage)> CreateAsync(Reservation reservation)
+    public async Task<(bool Success, string? ErrorMessage)> CreateAsync(Reservation reservation)
     {
         if (reservation.StartTime >= reservation.EndTime)
             return (false, "结束时间必须大于开始时间");
@@ -54,7 +54,7 @@ public class ReservationService : IReservationService
             .CountAsync(r => r.CreatedAt >= today && r.CreatedAt < today.AddDays(1));
     }
 
-    public async Task<List<Reservation>> GetAllAsync(string statusFilter = null)
+    public async Task<List<Reservation>> GetAllAsync(string? statusFilter = null)
     {
         var query = _context.Reservations
             .Include(r => r.Seat)
@@ -68,7 +68,7 @@ public class ReservationService : IReservationService
             .ToListAsync();
     }
 
-    public async Task<(bool Success, string ErrorMessage)> CancelAsync(int id, string userName)
+    public async Task<(bool Success, string? ErrorMessage)> CancelAsync(int id, string userName)
     {
         var reservation = await _context.Reservations.FindAsync(id);
         if (reservation == null)
@@ -85,7 +85,7 @@ public class ReservationService : IReservationService
         return (true, null);
     }
 
-    public async Task<(bool Success, string ErrorMessage)> AdminCancelAsync(int id)
+    public async Task<(bool Success, string? ErrorMessage)> AdminCancelAsync(int id)
     {
         var reservation = await _context.Reservations.FindAsync(id);
         if (reservation == null)
@@ -99,7 +99,7 @@ public class ReservationService : IReservationService
         return (true, null);
     }
 
-    public async Task<(bool Success, string ErrorMessage)> MarkDoneAsync(int id)
+    public async Task<(bool Success, string? ErrorMessage)> MarkDoneAsync(int id)
     {
         var reservation = await _context.Reservations.FindAsync(id);
         if (reservation == null)

@@ -76,7 +76,7 @@ public class ReservationController : Controller
 
         if (!result.Success)
         {
-            ModelState.AddModelError("", result.ErrorMessage);
+            ModelState.AddModelError("", result.ErrorMessage ?? "");
             model.AvailableTimeSlots = await _seatService.GetTimeSlotsAsync(model.SeatId, model.SelectedDate);
             return View(model);
         }

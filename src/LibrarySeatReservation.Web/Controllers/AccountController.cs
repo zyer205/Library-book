@@ -5,7 +5,7 @@ namespace LibrarySeatReservation.Web.Controllers;
 public class AccountController : Controller
 {
     [HttpPost]
-    public IActionResult Switch(string userName, string returnUrl = null)
+    public IActionResult Switch(string? userName, string? returnUrl = null)
     {
         if (string.IsNullOrEmpty(userName))
             return RedirectToAction("Index", "Home");

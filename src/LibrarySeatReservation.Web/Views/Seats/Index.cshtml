@@ -35,19 +35,23 @@
 }
 else
 {
-    <div class="row g-3">
+    <div class="row g-2 g-md-3">
         @foreach (var seat in Model.Seats)
         {
-            <div class="col-md-3 col-sm-6">
-                <div class="card @(seat.IsOccupied ? "border-warning" : "border-success") shadow-sm">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">@seat.SeatNumber</h5>
-                        <p class="card-text small text-muted">@seat.Floor · @seat.Area</p>
-                        <span class="badge @(seat.IsOccupied ? "bg-warning text-dark" : "bg-success") mb-2 d-inline-block">
-                            @(seat.IsOccupied ? "占用" : "空闲")
-                        </span>
-                        <br />
-                        <a asp-action="Detail" asp-route-id="@seat.Id" class="btn btn-sm btn-outline-primary mt-1">查看详情</a>
+            <div class="col-6 col-sm-6 col-md-3">
+                <div class="card seat-card @(seat.IsOccupied ? "border-warning" : "border-success") shadow-sm h-100">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title mb-1">@seat.SeatNumber</h5>
+                            <p class="card-text small text-muted mb-2">@seat.Floor · @seat.Area</p>
+                        </div>
+                        <div>
+                            <span class="badge @(seat.IsOccupied ? "bg-warning text-dark" : "bg-success") mb-2 d-inline-block">
+                                @(seat.IsOccupied ? "占用" : "空闲")
+                            </span>
+                            <br />
+                            <a asp-action="Detail" asp-route-id="@seat.Id" class="btn btn-sm btn-outline-primary">查看详情</a>
+                        </div>
                     </div>
                 </div>
             </div>

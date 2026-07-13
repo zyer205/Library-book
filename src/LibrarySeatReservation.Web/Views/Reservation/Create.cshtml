@@ -25,17 +25,17 @@
 
     <div class="mb-3">
         <label class="form-label">选择时段</label>
-        <div class="row g-2">
+        <div class="row g-1 g-md-2">
             @for (int i = 0; i < Model.AvailableTimeSlots.Count; i++)
             {
                 var slot = Model.AvailableTimeSlots[i];
-                <div class="col-md-3 col-sm-4 col-6">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input time-slot"
+                <div class="col-4 col-sm-3 col-md-2 col-lg-15">
+                    <div class="form-check slot-item p-2 text-center border rounded @(slot.IsOccupied ? "occupied" : "free")">
+                        <input type="checkbox" class="form-check-input time-slot position-static mt-0 mb-1"
                                data-start="@slot.StartTime.ToString("HH:mm")"
                                data-end="@slot.EndTime.ToString("HH:mm")"
                                @(slot.IsOccupied ? "disabled" : "") />
-                        <label class="form-check-label @(slot.IsOccupied ? "text-muted text-decoration-line-through" : "")">
+                        <label class="form-check-label d-block small @(slot.IsOccupied ? "text-muted text-decoration-line-through" : "")">
                             @slot.Label
                         </label>
                     </div>

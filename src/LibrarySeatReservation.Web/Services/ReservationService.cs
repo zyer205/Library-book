@@ -18,6 +18,12 @@ public class ReservationService : IReservationService
         if (reservation.StartTime >= reservation.EndTime)
             return (false, "结束时间必须大于开始时间");
 
+        var seat = await _context.Seats.FindAsync(reservation.SeatId);
+        if (seat == null)
+            return (false, "座位不存在");
+        if (!seat.IsEnabled)
+            return (false, "该座位已停用，无法预约");
+
         var conflict = await _context.Reservations.AnyAsync(r =>
             r.SeatId == reservation.SeatId &&
             r.Status != "已取消" &&

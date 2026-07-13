@@ -18,15 +18,15 @@
 }
 else
 {
-    <div style="overflow-x:auto;">
-        <table class="table table-hover">
-            <thead>
+    <div class="table-responsive">
+        <table class="table table-hover table-sm align-middle">
+            <thead class="table-light">
                 <tr>
                     <th>编号</th>
                     <th>楼层</th>
                     <th>区域</th>
                     <th>启用</th>
-                    <th>操作</th>
+                    <th class="text-nowrap">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@ else
                                 @(seat.IsEnabled ? "启用" : "禁用")
                             </span>
                         </td>
-                        <td>
+                        <td class="text-nowrap">
                             <a href="/Admin/Seats/Edit/@seat.Id" class="btn btn-sm btn-outline-primary me-1">编辑</a>
                             <form asp-action="Toggle" asp-route-id="@seat.Id" method="post" style="display:inline">
                                 <button type="submit" class="btn btn-sm @(seat.IsEnabled ? "btn-warning" : "btn-success")">

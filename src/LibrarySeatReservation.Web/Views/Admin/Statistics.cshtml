@@ -16,36 +16,36 @@
 }
 else
 {
-    <div class="row g-4 mt-2">
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <h3 class="display-6 text-primary">@Model.TodayReservations</h3>
-                    <p class="card-text">今日预约数</p>
+    <div class="row g-3 mt-2">
+        <div class="col-sm-6 col-md-3">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <h3 class="display-6 text-primary mb-1">@Model.TodayReservations</h3>
+                    <p class="card-text text-muted small mb-0">今日预约数</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <h3 class="display-6 text-warning">@Model.ActiveReservations</h3>
-                    <p class="card-text">当前有效预约</p>
+        <div class="col-sm-6 col-md-3">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <h3 class="display-6 text-warning mb-1">@Model.ActiveReservations</h3>
+                    <p class="card-text text-muted small mb-0">当前有效预约</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <h3 class="display-6 text-info">@Model.SeatUsageRate%</h3>
-                    <p class="card-text">座位使用率</p>
+        <div class="col-sm-6 col-md-3">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <h3 class="display-6 text-info mb-1">@Model.SeatUsageRate%</h3>
+                    <p class="card-text text-muted small mb-0">座位使用率</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <h3 class="display-6 text-secondary">@Model.TotalReservations</h3>
-                    <p class="card-text">历史总预约</p>
+        <div class="col-sm-6 col-md-3">
+            <div class="card text-center shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-center">
+                    <h3 class="display-6 text-secondary mb-1">@Model.TotalReservations</h3>
+                    <p class="card-text text-muted small mb-0">历史总预约</p>
                 </div>
             </div>
         </div>

@@ -51,6 +51,19 @@ public class SeatService : ISeatService
         return await query.OrderBy(s => s.SeatNumber).ToListAsync();
     }
 
+    public async Task<HashSet<int>> GetCurrentlyOccupiedSeatIdsAsync()
+    {
+        var now = DateTime.Now;
+        var occupiedIds = await _context.Reservations
+            .Where(r => r.Status == "待使用"
+                     && r.StartTime <= now
+                     && r.EndTime > now)
+            .Select(r => r.SeatId)
+            .Distinct()
+            .ToListAsync();
+        return new HashSet<int>(occupiedIds);
+    }
+
     public async Task<bool> IsOccupiedNowAsync(int seatId)
     {
         var now = DateTime.Now;

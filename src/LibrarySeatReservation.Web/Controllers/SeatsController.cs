@@ -21,21 +21,17 @@ public class SeatsController : Controller
 
         var seats = await _seatService.GetAllAsync(floor);
         var floors = await _seatService.GetDistinctFloorsAsync();
+        var occupiedSeatIds = await _seatService.GetCurrentlyOccupiedSeatIdsAsync();
 
-        var seatDisplays = new List<SeatDisplayVM>();
-        foreach (var seat in seats)
+        var seatDisplays = seats.Select(seat => new SeatDisplayVM
         {
-            var isOccupied = await _seatService.IsOccupiedNowAsync(seat.Id);
-            seatDisplays.Add(new SeatDisplayVM
-            {
-                Id = seat.Id,
-                Floor = seat.Floor,
-                Area = seat.Area,
-                SeatNumber = seat.SeatNumber,
-                IsEnabled = seat.IsEnabled,
-                IsOccupied = isOccupied
-            });
-        }
+            Id = seat.Id,
+            Floor = seat.Floor,
+            Area = seat.Area,
+            SeatNumber = seat.SeatNumber,
+            IsEnabled = seat.IsEnabled,
+            IsOccupied = occupiedSeatIds.Contains(seat.Id)
+        }).ToList();
 
         var viewModel = new SeatsIndexViewModel
         {

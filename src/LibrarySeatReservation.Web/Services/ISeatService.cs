@@ -11,6 +11,7 @@ public interface ISeatService
     Task<List<Seat>> GetAllAsync(string floor = null);
     Task<List<Seat>> GetAllSeatsAsync();
     Task<bool> IsOccupiedNowAsync(int seatId);
+    Task<HashSet<int>> GetCurrentlyOccupiedSeatIdsAsync();
     Task<Seat?> GetByIdAsync(int id);
     Task<List<TimeSlotVM>> GetTimeSlotsAsync(int seatId, DateTime date);
     Task<(bool Success, string ErrorMessage)> CreateAsync(Seat seat);

@@ -28,32 +28,32 @@
 }
 else
 {
-    <div style="overflow-x:auto;">
-        <table class="table table-hover">
-            <thead>
+    <div class="table-responsive">
+        <table class="table table-hover table-sm align-middle">
+            <thead class="table-light">
                 <tr>
                     <th>ID</th>
                     <th>座位</th>
                     <th>预约人</th>
                     <th>时段</th>
                     <th>状态</th>
-                    <th>操作</th>
+                    <th class="text-nowrap">操作</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var r in Model.Reservations)
                 {
                     <tr>
-                        <td>@r.Id</td>
+                        <td class="text-muted small">@r.Id</td>
                         <td>@r.Seat?.SeatNumber</td>
                         <td>@r.UserName</td>
-                        <td>@r.StartTime.ToString("MM/dd HH:mm") - @r.EndTime.ToString("HH:mm")</td>
+                        <td class="text-nowrap small">@r.StartTime.ToString("MM/dd HH:mm") - @r.EndTime.ToString("HH:mm")</td>
                         <td>
                             <span class="badge @(r.Status == "待使用" ? "bg-primary" : r.Status == "已完成" ? "bg-success" : "bg-secondary")">
                                 @r.Status
                             </span>
                         </td>
-                        <td>
+                        <td class="text-nowrap">
                             @if (r.Status == "待使用")
                             {
                                 <form asp-action="MarkDone" asp-route-id="@r.Id" method="post" style="display:inline">

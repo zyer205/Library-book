@@ -20,6 +20,9 @@ public class LoginController : Controller
         if (HttpContext.Session.GetInt32("IsAdmin") == 1)
             return Redirect("/Admin/Reservations");
 
+        if (Request.Query["timeout"] == "1")
+            TempData["Error"] = "会话已超时，请重新登录";
+
         return View("~/Views/Admin/Login.cshtml", new LoginViewModel());
     }
 

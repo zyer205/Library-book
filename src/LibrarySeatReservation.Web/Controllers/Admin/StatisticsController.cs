@@ -19,7 +19,7 @@ public class StatisticsController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         var stats = await _reservationService.GetStatisticsAsync();
 

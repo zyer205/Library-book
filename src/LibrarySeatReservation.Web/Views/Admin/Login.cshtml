@@ -19,6 +19,13 @@
                 <div class="card shadow">
                     <div class="card-body p-4">
                         <h3 class="text-center mb-4">管理员登录</h3>
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                @TempData["Error"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
                         <form method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label class="form-label">用户名</label>

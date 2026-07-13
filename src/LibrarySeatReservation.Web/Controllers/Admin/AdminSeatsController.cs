@@ -20,7 +20,7 @@ public class AdminSeatsController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         var seats = await _seatService.GetAllSeatsAsync();
         var viewModel = new AdminSeatsViewModel { Seats = seats };
@@ -31,7 +31,7 @@ public class AdminSeatsController : Controller
     [Route("Create")]
     public async Task<IActionResult> Create(SeatCreateViewModel model)
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         if (!ModelState.IsValid)
             return View("~/Views/Admin/Seats.cshtml", new AdminSeatsViewModel());
@@ -58,7 +58,7 @@ public class AdminSeatsController : Controller
     [Route("Edit/{id}")]
     public async Task<IActionResult> Edit(int id)
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         var seat = await _seatService.GetByIdAsync(id);
         if (seat == null) return NotFound();
@@ -78,7 +78,7 @@ public class AdminSeatsController : Controller
     [Route("Edit/{id}")]
     public async Task<IActionResult> Edit(int id, SeatEditViewModel model)
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         if (!ModelState.IsValid)
             return View("~/Views/Admin/SeatEdit.cshtml", model);
@@ -105,7 +105,7 @@ public class AdminSeatsController : Controller
     [Route("Toggle/{id}")]
     public async Task<IActionResult> Toggle(int id)
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         var result = await _seatService.ToggleEnabledAsync(id);
 

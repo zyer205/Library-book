@@ -19,7 +19,7 @@ public class ReservationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string status = null)
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         var reservations = await _reservationService.GetAllAsync(status);
 
@@ -37,7 +37,7 @@ public class ReservationsController : Controller
     [Route("MarkDone/{id}")]
     public async Task<IActionResult> MarkDone(int id)
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         var result = await _reservationService.MarkDoneAsync(id);
 
@@ -53,7 +53,7 @@ public class ReservationsController : Controller
     [Route("Cancel/{id}")]
     public async Task<IActionResult> Cancel(int id)
     {
-        if (!IsAdmin()) return Redirect("/Admin/Login");
+        if (!IsAdmin()) return Redirect("/Admin/Login?timeout=1");
 
         var result = await _reservationService.AdminCancelAsync(id);
 

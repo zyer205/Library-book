@@ -21,7 +21,10 @@ public class ReservationController : Controller
     {
         var userName = HttpContext.Session.GetString("UserName");
         if (string.IsNullOrEmpty(userName))
+        {
+            TempData["Error"] = "会话已超时，请重新选择账号登录";
             return RedirectToAction("Index", "Home");
+        }
 
         var seat = await _seatService.GetByIdAsync(seatId);
         if (seat == null || !seat.IsEnabled)
@@ -49,7 +52,10 @@ public class ReservationController : Controller
     {
         var userName = HttpContext.Session.GetString("UserName");
         if (string.IsNullOrEmpty(userName))
+        {
+            TempData["Error"] = "会话已超时，请重新选择账号登录";
             return RedirectToAction("Index", "Home");
+        }
 
         if (!ModelState.IsValid)
         {
@@ -84,7 +90,10 @@ public class ReservationController : Controller
     {
         var userName = HttpContext.Session.GetString("UserName");
         if (string.IsNullOrEmpty(userName))
+        {
+            TempData["Error"] = "会话已超时，请重新选择账号登录";
             return RedirectToAction("Index", "Home");
+        }
 
         var reservations = await _reservationService.GetMyAsync(userName);
 
@@ -102,7 +111,10 @@ public class ReservationController : Controller
     {
         var userName = HttpContext.Session.GetString("UserName");
         if (string.IsNullOrEmpty(userName))
+        {
+            TempData["Error"] = "会话已超时，请重新选择账号登录";
             return RedirectToAction("Index", "Home");
+        }
 
         var result = await _reservationService.CancelAsync(id, userName);
 

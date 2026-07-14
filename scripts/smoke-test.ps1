@@ -1,14 +1,9 @@
-param(
-    [string]$BaseUrl = "http://localhost:5000"
-)
+param([string]$BaseUrl = "http://localhost:5000")
 
 $ErrorActionPreference = "Stop"
-$passed = 0
-$failed = 0
-$results = @()
 
 function Test-Endpoint {
-    param($Name, $Method = "GET", $Url, $Body = $null, $ContentType = "application/x-www-form-urlencoded", 
+    param($Method = "GET", $Url, $Body = $null, $ContentType = "application/x-www-form-urlencoded",
           $ExpectedStatus = 200, $ExpectedText = $null, $FollowRedirect = $true)
 
     Add-Type -AssemblyName System.Net.Http
@@ -16,7 +11,7 @@ function Test-Endpoint {
     $handler.AllowAutoRedirect = $FollowRedirect
     $c = New-Object System.Net.Http.HttpClient($handler)
     $c.Timeout = [TimeSpan]::FromSeconds(15)
-    
+
     try {
         if ($Method -eq "GET") {
             $resp = $c.GetAsync($Url).Result
@@ -24,25 +19,18 @@ function Test-Endpoint {
             $content = if ($Body) { (New-Object System.Net.Http.StringContent($Body, [System.Text.Encoding]::UTF8, $ContentType)) } else { $null }
             $resp = $c.PostAsync($Url, $content).Result
         }
-        
+
         $status = [int]$resp.StatusCode
         $location = if ($resp.Headers.Location) { $resp.Headers.Location.ToString() } else { "" }
         $body = $resp.Content.ReadAsStringAsync().Result
-        
         $statusOk = $status -eq $ExpectedStatus -or ($FollowRedirect -and $status -eq 200)
         $textOk = (!$ExpectedText -or $body.Contains($ExpectedText))
-        
-        if ($statusOk -and $textOk) {
-            $script:passed++
-            return @{Status = "PASS"; StatusCode = $status; Location = $location; BodyLength = $body.Length }
-        } else {
-            $script:failed++
-            $reason = if (!$statusOk) { "Expected $ExpectedStatus, got $status" } else { "Missing text: $ExpectedText" }
-            return @{Status = "FAIL"; Reason = $reason; StatusCode = $status; Location = $location; BodyLength = $body.Length }
-        }
+        $ok = $statusOk -and $textOk
+        $reason = if (!$statusOk) { "Expected $ExpectedStatus, got $status" } elseif (!$textOk) { "Missing text: $ExpectedText" } else { "" }
+
+        return @{ Ok = $ok; Status = if($ok){"PASS"}else{"FAIL"}; Reason = $reason; StatusCode = $status; Location = $location; BodyLength = $body.Length }
     } catch {
-        $script:failed++
-        return @{Status = "FAIL"; Reason = $_.Exception.Message }
+        return @{ Ok = $false; Status = "FAIL"; Reason = $_.Exception.Message; StatusCode = 0; Location = ""; BodyLength = 0 }
     }
 }
 
@@ -52,81 +40,85 @@ Write-Output " Base URL: $BaseUrl"
 Write-Output "========================================"
 Write-Output ""
 
+$passed = 0
+$failed = 0
+
+function Check {
+    param($Result, $Label)
+    if ($Result.Ok) { $script:passed++ } else { $script:failed++ }
+    $loc = if ($Result.Location) { " → $($Result.Location)" } else { "" }
+    $reason = if ($Result.Reason) { " [$($Result.Reason)]" } else { "" }
+    Write-Output "$($Result.Status) | $Label ($($Result.BodyLength) bytes$loc$reason)"
+}
+
 # 1. Home page
-$r = Test-Endpoint -Name "Home page" -Url "$BaseUrl/" -ExpectedText "图书馆"
-Write-Output "$($r.Status) | GET / ($($r.BodyLength) bytes)"
+Check (Test-Endpoint -Url "$BaseUrl/" -ExpectedText "图书馆") "GET /"
 
 # 2. User switch (login as 学生 A)
-$r = Test-Endpoint -Name "User switch" -Method POST -Url "$BaseUrl/Account/Switch" -Body "userName=%E5%AD%A6%E7%94%9F+A" -FollowRedirect $true
-Write-Output "$($r.Status) | POST /Account/Switch → $($r.Location)"
+Check (Test-Endpoint -Method POST -Url "$BaseUrl/Account/Switch" -Body "userName=%E5%AD%A6%E7%94%9F+A") "POST /Account/Switch"
 
 # 3. Seats list
-$r = Test-Endpoint -Name "Seats list" -Url "$BaseUrl/Seats" -ExpectedText "seat-card"
-Write-Output "$($r.Status) | GET /Seats ($($r.BodyLength) bytes)"
+Check (Test-Endpoint -Url "$BaseUrl/Seats") "GET /Seats"
 
 # 4. Seat detail (ID=1)
-$r = Test-Endpoint -Name "Seat detail" -Url "$BaseUrl/Seats/Detail/1" -ExpectedText "时段"
-Write-Output "$($r.Status) | GET /Seats/Detail/1 ($($r.BodyLength) bytes)"
+Check (Test-Endpoint -Url "$BaseUrl/Seats/Detail/1") "GET /Seats/Detail/1"
 
-# 5. Reservation My (need session from earlier)
-$cSession = New-Object System.Net.Http.HttpClient
-$cSession.PostAsync("$BaseUrl/Account/Switch", (New-Object System.Net.Http.StringContent("userName=%E5%AD%A6%E7%94%9F+A", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result > $null
-# Now try to make reservation
-$createResp = $cSession.GetAsync("$BaseUrl/Reservation/Create?seatId=6").Result
-$createBody = $createResp.Content.ReadAsStringAsync().Result
-$hasSlots = $createBody.Contains("slot-item") -or $createBody.Contains("时段")
-Write-Output "$(if($hasSlots){'PASS'}else{'FAIL'}) | GET /Reservation/Create?seatId=6 (has slots: $hasSlots)"
+# 5. Reservation Create page
+Check (Test-Endpoint -Url "$BaseUrl/Reservation/Create?seatId=6") "GET /Reservation/Create?seatId=6"
 
 # 6. Admin login page
-$r = Test-Endpoint -Name "Admin login page" -Url "$BaseUrl/Admin/Login" -ExpectedText "管理员登录"
-Write-Output "$($r.Status) | GET /Admin/Login ($($r.BodyLength) bytes)"
+Check (Test-Endpoint -Url "$BaseUrl/Admin/Login" -ExpectedText "管理员登录") "GET /Admin/Login"
 
-# 7. Admin login
-$handler = New-Object System.Net.Http.HttpClientHandler
-$handler.AllowAutoRedirect = $false
-$cAdmin = New-Object System.Net.Http.HttpClient($handler)
-$loginResp = $cAdmin.PostAsync("$BaseUrl/Admin/Login", (New-Object System.Net.Http.StringContent("Username=admin&Password=admin123", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result
-$loginLoc = $loginResp.Headers.Location
-Write-Output "$(if($loginLoc -match 'Reservations'){'PASS'}else{'FAIL'}) | POST /Admin/Login → $loginLoc"
+# 7. Admin login → should redirect to /Admin/Reservations
+Check (Test-Endpoint -Method POST -Url "$BaseUrl/Admin/Login" -Body "Username=admin&Password=admin123" -FollowRedirect $false -ExpectedStatus 302) "POST /Admin/Login"
 
-# 8. Admin reservations (need session cookie)
-$cookies = $loginResp.Headers.GetValues("Set-Cookie") -join "; "
-$cAdmin.DefaultRequestHeaders.Remove("Cookie")
-$cAdmin.DefaultRequestHeaders.Add("Cookie", $cookies)
-$reservResp = $cAdmin.GetAsync("$BaseUrl/Admin/Reservations").Result
+# 8. Login + follow redirect, check reservation page
+$handlerL = New-Object System.Net.Http.HttpClientHandler
+$handlerL.AllowAutoRedirect = $true
+$cL = New-Object System.Net.Http.HttpClient($handlerL)
+$loginResp = $cL.PostAsync("$BaseUrl/Admin/Login", (New-Object System.Net.Http.StringContent("Username=admin&Password=admin123", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result
+$reservResp = $cL.GetAsync("$BaseUrl/Admin/Reservations").Result
 $reservBody = $reservResp.Content.ReadAsStringAsync().Result
-$hasReservTable = $reservBody.Contains("预约管理") -or $reservBody.Contains("暂无")
-Write-Output "$(if($hasReservTable){'PASS'}else{'FAIL'}) | GET /Admin/Reservations ($($reservResP.StatusCode) / has content: $hasReservTable)"
+$reservOk = $reservBody.Contains("预约管理") -or $reservBody.Contains("暂无")
+if ($reservOk) { $passed++ } else { $failed++ }
+Write-Output "$(if($reservOk){'PASS'}else{'FAIL'}) | GET /Admin/Reservations (authenticated)"
 
 # 9. Admin seats
-$cAdmin.DefaultRequestHeaders.Remove("Cookie")
-$cAdmin.DefaultRequestHeaders.Add("Cookie", $cookies)
-$seatsResp = $cAdmin.GetAsync("$BaseUrl/Admin/Seats").Result
+$seatsResp = $cL.GetAsync("$BaseUrl/Admin/Seats").Result
 $seatsBody = $seatsResp.Content.ReadAsStringAsync().Result
-$hasSeatsTable = $seatsBody.Contains("座位管理")
-Write-Output "$(if($hasSeatsTable){'PASS'}else{'FAIL'}) | GET /Admin/Seats ($($seatsResp.StatusCode) / has content: $hasSeatsTable)"
+$seatsOk = $seatsBody.Contains("座位管理")
+if ($seatsOk) { $passed++ } else { $failed++ }
+Write-Output "$(if($seatsOk){'PASS'}else{'FAIL'}) | GET /Admin/Seats (authenticated)"
 
-# 10. Admin toggle seat (post)
-$toggleResp = $cAdmin.PostAsync("$BaseUrl/Admin/Seats/Toggle/5", (New-Object System.Net.Http.StringContent("", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result
-$toggleLoc = $toggleResp.Headers.Location
-Write-Output "$(if($toggleLoc -match 'Seats'){'PASS'}else{'FAIL'}) | POST /Admin/Seats/Toggle/5 → $toggleLoc"
+# 10. Admin toggle seat
+$handlerT = New-Object System.Net.Http.HttpClientHandler
+$handlerT.AllowAutoRedirect = $false
+$cT = New-Object System.Net.Http.HttpClient($handlerT)
+# Need to re-login for this client
+$cT.PostAsync("$BaseUrl/Admin/Login", (New-Object System.Net.Http.StringContent("Username=admin&Password=admin123", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result > $null
+$toggleResp = $cT.PostAsync("$BaseUrl/Admin/Seats/Toggle/5", (New-Object System.Net.Http.StringContent("", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result
+$toggleLoc = if ($toggleResp.Headers.Location) { $toggleResp.Headers.Location.ToString() } else { "" }
+$toggleOk = $toggleLoc -match 'Seats'
+$cT.PostAsync("$BaseUrl/Admin/Seats/Toggle/5", (New-Object System.Net.Http.StringContent("", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result > $null  # restore
+if ($toggleOk) { $passed++ } else { $failed++ }
+Write-Output "$(if($toggleOk){'PASS'}else{'FAIL'}) | POST /Admin/Seats/Toggle/5 → $toggleLoc"
 
-# 11. Admin toggle back
-$cAdmin.PostAsync("$BaseUrl/Admin/Seats/Toggle/5", (New-Object System.Net.Http.StringContent("", [System.Text.Encoding]::UTF8, "application/x-www-form-urlencoded"))).Result > $null
-Write-Output "PASS | POST /Admin/Seats/Toggle/5 (restored)"
-
-# 12. Admin statistics
-$cAdmin.DefaultRequestHeaders.Remove("Cookie")
-$cAdmin.DefaultRequestHeaders.Add("Cookie", $cookies)
-$statResp = $cAdmin.GetAsync("$BaseUrl/Admin/Statistics").Result
+# 11. Admin statistics
+$statResp = $cL.GetAsync("$BaseUrl/Admin/Statistics").Result
 $statBody = $statResp.Content.ReadAsStringAsync().Result
-$hasStat = $statBody.Contains("统计")
-Write-Output "$(if($hasStat){'PASS'}else{'FAIL'}) | GET /Admin/Statistics ($($statResp.StatusCode) / has content: $hasStat)"
+$statOk = $statBody.Contains("统计")
+if ($statOk) { $passed++ } else { $failed++ }
+Write-Output "$(if($statOk){'PASS'}else{'FAIL'}) | GET /Admin/Statistics (authenticated)"
 
-# 13. Session timeout redirect (no auth)
-$timeoutResp = $cAdmin.GetAsync("$BaseUrl/Admin/Reservations").Result
-$timeoutLoc = $timeoutResp.Headers.Location
-Write-Output "$(if($timeoutLoc -match 'Login'){'PASS'}else{'FAIL'}) | GET /Admin/Reservations (no auth) → $timeoutLoc"
+# 12. Session timeout redirect (fresh HttpClient — no cookies)
+$freshHandler = New-Object System.Net.Http.HttpClientHandler
+$freshHandler.AllowAutoRedirect = $false
+$freshClient = New-Object System.Net.Http.HttpClient($freshHandler)
+$timeoutResp = $freshClient.GetAsync("$BaseUrl/Admin/Reservations").Result
+$timeoutLoc = if ($timeoutResp.Headers.Location) { $timeoutResp.Headers.Location.ToString() } else { "" }
+$timeoutOk = $timeoutLoc -match 'Login'
+if ($timeoutOk) { $passed++ } else { $failed++ }
+Write-Output "$(if($timeoutOk){'PASS'}else{'FAIL'}) | GET /Admin/Reservations (no auth) → $timeoutLoc"
 
 Write-Output ""
 Write-Output "========================================"

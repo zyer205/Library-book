@@ -1,0 +1,31 @@
+{
+  "name": "3",
+  "version": "1.0.0",
+  "description": "> 一个面向高校图书馆的轻量座位预约 Web 系统。 > 学生可以在线查看座位余量、预约座位、取消预约；管理员可以管理座位、查看和处理预约记录。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:user": "playwright test e2e/smoke-user.spec.ts",
+    "test:admin": "playwright test e2e/smoke-admin.spec.ts",
+    "test:cross": "playwright test e2e/smoke-cross.spec.ts",
+    "smoke": "pwsh -NoProfile ./scripts/smoke-test.ps1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zyer205/Library-book.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zyer205/Library-book/issues"
+  },
+  "homepage": "https://github.com/zyer205/Library-book#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}

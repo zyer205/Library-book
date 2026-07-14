@@ -123,7 +123,9 @@ LibrarySeatReservation/
 │   ├── 12-开发起步与骨架记录.md
 │   ├── 13-用户端主链路开发记录.md
 │   ├── 14-管理端与权限开发记录.md
-│   └── 15-功能完善与体验优化记录.md
+│   ├── 15-功能完善与体验优化记录.md
+│   ├── 15-功能完善与体验优化-审计.md
+│   └── 16-联调测试与缺陷闭环.md
 ├── prototype/                           # 静态原型 HTML
 │   └── static-v1/
 └── README.md                            # 本文件
@@ -147,15 +149,38 @@ LibrarySeatReservation/
 ```bash
 dotnet --version               # 应显示 9.x
 dotnet --list-sdks              # 确认 9.0 SDK 存在
+node --version                 # 应显示 v18+（用于 Playwright 自动化测试）
+npm --version                  # 应显示 9+
+```
+
+**Playwright 自动化测试执行方式：**
+
+```bash
+# 安装依赖（首次）
+npm install
+npx playwright install chromium
+
+# 运行全部 Playwright 测试（默认 headless Chromium）
+npm test
+# 或指定测试文件
+npm run test:user              # 用户端烟雾测试
+npm run test:admin             # 管理端烟雾测试
+npm run test:cross             # 交叉流程测试
+
+# 运行脚本烟雾测试（需先启动应用）
+npm run smoke                  # PowerShell 脚本烟雾测试
+
+# 运行 Playwright 测试（带浏览器窗口）
+npm run test:headed
 ```
 
 ---
 
 ## 当前阶段
 
-**Sprint 3 已完成 ✅ — 功能完善与体验优化**
-> 13 个 TC 全部通过，T15-06 Session 超时处理已实现
-> 开发记录见 `docs/15-功能完善与体验优化记录.md`，任务卡见 `docs/项目任务板与迭代记录.md`。
+**Sprint 4 已完成 ✅ — 联调测试与缺陷闭环**
+> 23/23 Playwright 自动点击通过，全链路回归 + 兼容性验证通过，P0/P1 已清零
+> 开发记录见 `docs/16-联调测试与缺陷闭环.md`，任务卡见 `docs/项目任务板与迭代记录.md`。
 
 ---
 
@@ -169,7 +194,7 @@ dotnet --list-sdks              # 确认 9.0 SDK 存在
 | Sprint 1 | 用户端核心功能（身份切换、座位列表、预约提交、我的预约、取消） | 2026-07-13 |
 | Sprint 2 | 管理端功能（登录、预约管理、座位管理、统计页） | 2026-07-13 |
 | Sprint 3 | 功能完善与体验优化（13 TC 全量执行、Session 超时处理、N+1 优化、已停用座位防护、管理端/移动端体验） | 2026-07-13 |
-| Sprint 4（缓冲） | 样式调整、部署文档 | — |
+| Sprint 4 | 联调测试与缺陷闭环（Playwright 测试体系、全链路回归、兼容性验证、Bug 闭环） | 2026-07-14 |
 
 ---
 
@@ -207,8 +232,10 @@ Seed Data 已包含：
 - 密码明文存储（仅课堂演示阶段，生产环境必须用 bcrypt）
 - 预约冲突检测存在竞态条件（低并发环境下可接受）
 - 座位占闲状态不实时推送，刷新页面后重新计算
-- 管理端手机端已做响应式适配（`table-responsive` 横向滚动 + 侧边栏折叠）
+- 管理端手机端已做响应式适配（`table-responsive` 横向滚动 + 侧边栏折叠）；管理端手机端补充验证（sidebar 折叠交互确认）为 P2 未完成项
 - 已停用座位 POST 防护已在 Service 层实现（Service + Controller GET 双重检查）
+- Playwright 自动化测试使用 `browserName: 'chromium'`（Playwright 内置 Chromium），未使用 `channel: 'msedge'`，因本机 headless msedge 受 GPU 策略限制不可用
+- 测试默认单线程顺序执行（`workers: 1`），避免 session/cookie 冲突
 
 ---
 
